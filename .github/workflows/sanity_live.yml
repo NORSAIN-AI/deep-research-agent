@@ -1,0 +1,46 @@
+# .github/workflows/sanity_live.yml
+name: Sanity Live Ping
+
+on:
+  workflow_dispatch:  # gjør at du kan starte den manuelt
+    inputs:
+      live_ping:
+        description: "Ping OpenAI/Serper med ekte API-kall"
+        required: true
+        default: "true"
+
+jobs:
+  live-ping:
+    if: ${{ github.event.inputs.live_ping == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Show secrets presence
+        run: |
+          test -n "${OPENAI_API_KEY}" || { echo "❌ Missing OPENAI_API_KEY"; exit 1; }
+          test -n "${SERPER_API_KEY}" || { echo "❌ Missing SERPER_API_KEY"; exit 1; }
+          echo "✅ Both secrets are present"
+
+      - name: Live ping OpenAI
+        run: |
+          echo "🔗 Testing OpenAI API..."
+          curl https://api.openai.com/v1/models \
+            -H "Authorization: Bearer ${OPENAI_API_KEY}" \
+            -s | head -n 20 || { echo "❌ OpenAI ping failed"; exit 1; }
+          echo "✅ OpenAI responded OK"
+
+      - name: Live ping Serper
+        run: |
+          echo "🔗 Testing Serper API..."
+          curl "https://google.serper.dev/search" \
+            -H "X-API-KEY: ${SERPER_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{"q":"test"}' \
+            -s | head -n 20 || { echo "❌ Serper ping failed"; exit 1; }
+          echo "✅ Serper responded OK"
