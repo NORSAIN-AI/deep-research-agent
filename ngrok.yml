@@ -1,0 +1,27 @@
+agent:
+  authtoken: 31QYRhsglE9EInll1FRuWUqj4vm_5ta9zeeUvDU64nVpW5X1a
+  region: us
+  inspect: true
+  metadata: "env=production,version=1.0.0"
+  log_level: info
+  log_format: json
+  tunnel:
+    name: my-tunnel
+    addr: 8080
+    proto: http
+    subdomain: myapp
+    inspect: true
+    auth:
+      username: user
+      password: pass
+    headers:
+      X-Custom-Header: "value"
+    host_header: rewrite
+    bind_tls: true
+    remote_addr: "0.tcp.ngrok.io:12345"
+    retry:
+      attempts: 5
+      interval: 10s
+    metadata: "service=myservice,team=devops"
+    labels:
+      - key: environment
