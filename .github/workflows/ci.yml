@@ -1,16 +1,63 @@
 name: ci
+
 on:
   push:
     branches: [ main ]
   pull_request:
+
+permissions:
+  contents: read
+
 jobs:
-  build-test:
+  lint-and-test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ "3.11" ] # legg evt. til "3.12"
+    env:
+      # Gjør nøklene tilgjengelig for hele jobben
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - run: pip install -r requirements.txt -r requirements-dev.txt
-      - run: pip install .
-      - run: pytest -q
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Verify secrets present
+        run: |
+          if [ -z "${OPENAI_API_KEY}" ]; then
+            echo "❌ OPENAI_API_KEY is not set in repo secrets"; exit 1
+          fi
+          if [ -z "${SERPER_API_KEY}" ]; then
+            echo "❌ SERPER_API_KEY is not set in repo secrets"; exit 1
+          fi
+          echo "✅ All secrets are set"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+          # installer pakken hvis du har setup.cfg/pyproject.toml
+          if [ -f pyproject.toml ] || [ -f setup.cfg ] || [ -f setup.py ]; then pip install .; fi
+          # pre-commit hooks for lint (valgfritt men anbefalt)
+          pip install pre-commit
+          pre-commit install --install-hooks
+
+      - name: Lint (pre-commit)
+        run: pre-commit run --all-files
+
+      - name: Run tests
+        run: pytest -q
+        # Hvis du vil scoping secrets kun til test:
+        # env:
+        #   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        #   SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+    

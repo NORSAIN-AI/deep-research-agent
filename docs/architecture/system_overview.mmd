@@ -1,0 +1,8 @@
+flowchart TD
+    U[Bruker] -->|Gir tema| A[DeepResearchCrew]
+    A --> B[Deep Research Agent]
+    B -->|Bruker verktøy| T1[SerperDevTool]
+    B -->|Bruker verktøy| T2[GithubSearchTool]
+    B --> C[LLM (OpenAI GPT-4o)]
+    C --> D[Rapportgenerator]
+    D --> O[📄 Markdown-rapport]
