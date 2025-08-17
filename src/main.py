@@ -14,9 +14,7 @@ from src.crew import DeepResearchCrew
 
 
 def parse_args() -> argparse.Namespace:
-    p = argparse.ArgumentParser(
-        description="Kjør DeepResearch og generér en Markdown-rapport."
-    )
+    p = argparse.ArgumentParser(description="Kjør DeepResearch og generér en Markdown-rapport.")
     p.add_argument(
         "topic",
         nargs="*",
@@ -36,12 +34,13 @@ def ensure_env() -> None:
     if not os.getenv("OPENAI_API_KEY"):
         missing.append("OPENAI_API_KEY")
     # SerperDevTool trenger denne hvis den brukes i oppsettet ditt:
-    if os.getenv("USE_SERPER", "1") not in ("0", "false", "False"):
-        if not os.getenv("SERPER_API_KEY"):
-            missing.append("SERPER_API_KEY (kreves av SerperDevTool)")
+    if os.getenv("USE_SERPER", "1") not in ("0", "false", "False") and not os.getenv(
+        "SERPER_API_KEY"
+    ):
+        missing.append("SERPER_API_KEY (kreves av SerperDevTool)")
     if missing:
         msg = "❌ Mangler miljøvariabler: " + ", ".join(missing)
-        raise EnvironmentError(msg)
+        raise OSError(msg)
 
 
 def main() -> int:
@@ -50,15 +49,14 @@ def main() -> int:
 
     # konfigurer loguru
     logger.remove()
-    logger.add(sys.stderr, level=args.log_level,
-               enqueue=True, backtrace=False, diagnose=False)
+    logger.add(sys.stderr, level=args.log_level, enqueue=True, backtrace=False, diagnose=False)
 
     topic = " ".join(args.topic) if args.topic else "agentic ai trender 2025"
     logger.info(f"🚀 Starter DeepResearch for tema: '{topic}'")
 
     try:
         ensure_env()
-    except EnvironmentError as e:
+    except OSError as e:
         logger.error(str(e))
         return 2
 

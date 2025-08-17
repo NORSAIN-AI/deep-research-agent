@@ -1,8 +1,9 @@
 # src/openai_client.py
-from openai import OpenAI
+import logging
 import os
 import sys
-import logging
+
+from openai import OpenAI
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -16,7 +17,8 @@ def get_client() -> OpenAI:
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
         sys.exit(
-            "❌ OPENAI_API_KEY is not set. Please configure your environment or GitHub Secret.")
+            "❌ OPENAI_API_KEY is not set. Please configure your environment or GitHub Secret."
+        )
     logger.info("✅ OpenAI client initialized with API key from environment")
     return OpenAI(api_key=api_key)
 

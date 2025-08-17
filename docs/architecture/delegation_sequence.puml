@@ -1,0 +1,63 @@
+@startuml
+title DeepResearch Agent – Delegation Sequence
+
+actor User
+participant "CLI/Script\n(gen_report.py / src.main)" as CLI
+participant DeepResearchCrew as Crew
+participant "LeaderAgent\n(deep_research_agent)" as Leader
+participant "SourceQualityAnalyst" as QA
+participant "SynthesisWriter" as Writer
+participant "SerperDevTool" as Serper
+participant "GithubSearchTool" as GH
+participant "OpenAI (LLM)" as LLM
+database "outputs/\nMarkdown" as Store
+
+== Kickoff ==
+User -> CLI: Angi topic
+CLI -> Crew: kickoff(topic)
+
+note right of Crew
+  Laster agents.yaml / tasks.yaml
+  Validerer nøkler (OPENAI_API_KEY, ev. SERPER_API_KEY)
+end note
+
+Crew -> Leader: start(deep_research_task)
+
+== Delegasjon & innhenting ==
+par Parallell datainnhenting
+  Leader -> Serper: Web-søk på {topic}
+  Serper --> Leader: Treff / utdrag
+||
+  Leader -> GH: Repo-/kode-søk relatert til {topic}
+  GH --> Leader: Resultater
+end
+
+Leader -> QA: "Vurder kildekvalitet"
+QA --> Leader: Flagged/scoret kildeliste
+
+loop Iterativ analyse
+  Leader -> LLM: Analyser funn / kilder
+  LLM --> Leader: Mellomkonklusjoner
+end
+
+Leader -> Writer: "Syntetiser rapport (MD) m/ kilder, risiko, anbefalinger"
+Writer --> Leader: Utkast (Markdown)
+
+== Rapportgenerering ==
+Crew -> LLM: system: “skriv endelig rapport”\nuser: {prompt + funn}
+LLM --> Crew: Endelig Markdown
+Crew -> Store: Skriv fil: outputs/<slug>_report_<ts>.md
+Crew --> CLI: Absolutt filsti
+
+CLI --> User: "Rapport lagret: outputs/…"
+
+== Feil- og fallback-stier ==
+alt SERPER_API_KEY mangler
+  note over Serper
+    Deaktivert – hopper over web-søk
+  end note
+else Rate limit / nettverksfeil
+  Crew -> LLM: retry (opptil N ganger)
+end
+
+@enduml

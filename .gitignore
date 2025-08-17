@@ -1,11 +1,19 @@
+# --------------------
 # Python
+# --------------------
 __pycache__/
 *.py[cod]
 *.pyc
 *.pyo
 *.pyd
+*.so
+*.egg
+*.egg-info/
+.eggs/
 
-# Envs
+# --------------------
+# Environments
+# --------------------
 .env
 *.env
 .venv/
@@ -13,21 +21,70 @@ venv/
 env/
 ENV/
 
+# --------------------
 # Outputs & logs
+# --------------------
 outputs/*
 !outputs/.gitkeep
 logs/
 *.log
+*.out
+*.err
 
-# System/IDE
+# --------------------
+# System / IDE
+# --------------------
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
 *.iml
 
-# Byte-compiled & cache
-*.egg-info/
-.eggs/
+# --------------------
+# Caches
+# --------------------
 .mypy_cache/
 .pytest_cache/
+.pyre/
+.dmypy.json
+.pytype/
+__pypackages__/
+
+# --------------------
+# Coverage
+# --------------------
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# --------------------
+# Notebooks
+# --------------------
+.ipynb_checkpoints/
+*.ipynb_convert/
+
+# --------------------
+# Docker / Devcontainers
+# --------------------
+.devcontainer/.cache/
+docker-compose.override.yml
+*.pid
+
+# --------------------
+# Terraform / k8s
+# --------------------
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+
+# --------------------
+# Local data
+# --------------------
+data/
+tmp/

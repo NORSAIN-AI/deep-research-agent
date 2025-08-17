@@ -8,17 +8,26 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: [ "3.11" ] # legg evt. til "3.12"
+        python-version: [ "3.11" ]
     env:
-      # Gjør nøklene tilgjengelig for hele jobben
+      # Secrets tilgjengelig for hele jobben
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+      # Små kvalitets-envs
+      PYTHONUNBUFFERED: "1"
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      PIP_NO_COLOR: "1"
+      CI: "true"
 
     steps:
       - name: Checkout
@@ -32,12 +41,8 @@ jobs:
 
       - name: Verify secrets present
         run: |
-          if [ -z "${OPENAI_API_KEY}" ]; then
-            echo "❌ OPENAI_API_KEY is not set in repo secrets"; exit 1
-          fi
-          if [ -z "${SERPER_API_KEY}" ]; then
-            echo "❌ SERPER_API_KEY is not set in repo secrets"; exit 1
-          fi
+          test -n "${OPENAI_API_KEY}" || { echo "❌ Missing OPENAI_API_KEY"; exit 1; }
+          test -n "${SERPER_API_KEY}" || { echo "❌ Missing SERPER_API_KEY"; exit 1; }
           echo "✅ All secrets are set"
 
       - name: Install dependencies
@@ -45,19 +50,12 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
-          # installer pakken hvis du har setup.cfg/pyproject.toml
           if [ -f pyproject.toml ] || [ -f setup.cfg ] || [ -f setup.py ]; then pip install .; fi
-          # pre-commit hooks for lint (valgfritt men anbefalt)
           pip install pre-commit
-          pre-commit install --install-hooks
 
-      - name: Lint (pre-commit)
+      # Kjør alle pre-commit hooks på hele repoet
+      - name: Lint & static checks (pre-commit)
         run: pre-commit run --all-files
 
       - name: Run tests
         run: pytest -q
-        # Hvis du vil scoping secrets kun til test:
-        # env:
-        #   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        #   SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
-    

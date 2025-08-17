@@ -4,3 +4,6 @@ mypy
 pytest
 pytest-cov
 types-requests
+pre-commit
+bandit
+pip-audit

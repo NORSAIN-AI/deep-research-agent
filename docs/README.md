@@ -1,6 +1,6 @@
 # 📚 Dokumentasjon – deep_research_agent
 
-Velkommen til dokumentasjonen for **Deep Research Agent**.  
+Velkommen til dokumentasjonen for **Deep Research Agent**.
 Denne siden fungerer som inngangsport og oversikt over alt innhold i `docs/` og tilhørende prosjektfiler.
 
 ---

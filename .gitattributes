@@ -1,2 +1,56 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# --------------------
+# Default behavior
+# --------------------
+* text=auto eol=lf
+
+# --------------------
+# Markdown & docs
+*.md     text diff=markdown
+*.puml   text
+*.mmd    text
+*.txt    text
+
+# --------------------
+# Python
+*.py     text diff=python
+
+# --------------------
+# YAML / JSON
+*.yml    text
+*.yaml   text
+*.json   text
+
+# --------------------
+# Configs
+*.toml   text
+*.ini    text
+*.cfg    text
+
+# --------------------
+# Scripts
+*.sh     text eol=lf
+*.ps1    text eol=crlf
+*.bat    text eol=crlf
+
+# --------------------
+# Binary / do not diff
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.svg    text
+*.ico    binary
+*.pdf    binary
+
+# --------------------
+# Lock files (always LF to avoid conflicts)
+requirements.txt text eol=lf
+requirements-dev.txt text eol=lf
+poetry.lock text eol=lf
+Pipfile.lock text eol=lf
+
+# --------------------
+# GitHub linguist hints
+# Tell GitHub how to classify docs vs code
+docs/* linguist-documentation
+*.md    linguist-documentation
