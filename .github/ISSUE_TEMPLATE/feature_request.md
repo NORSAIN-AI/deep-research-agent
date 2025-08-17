@@ -1,6 +1,6 @@
 ---
 name: Feature request
-aabout: Foreslå en forbedring
+about: Foreslå en forbedring
 ---
 
 **Behov**

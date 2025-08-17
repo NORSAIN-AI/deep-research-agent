@@ -1,6 +1,6 @@
 ---
 name: Bug report
-aabout: Rapporter en feil
+about: Rapporter en feil
 ---
 
 **Feilbeskrivelse**
