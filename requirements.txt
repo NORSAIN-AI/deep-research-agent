@@ -1,0 +1,11 @@
+crewai
+crewai_tools
+openai
+litellm
+python-dotenv
+pyyaml
+loguru
+rich
+requests
+tqdm
+pytest

@@ -1,0 +1,13 @@
+@startuml
+title DeepResearch Agent - Class Diagram
+class DeepResearchCrew {
+  + crew()
+  + generate_report(prompt)
+}
+class Agent
+class Task
+class Tools
+DeepResearchCrew o-- Agent
+DeepResearchCrew o-- Task
+Agent o-- Tools
+@enduml

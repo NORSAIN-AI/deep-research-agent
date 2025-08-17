@@ -1,0 +1,5 @@
+tasks:
+  - name: deep_research_task
+    description: "Utfør deep research på {{ research_topic }}. Bryt ned i sub-oppgaver: søke data, analysere, syntetisere. Bruk tools for eksterne kilder og produser en rapport."
+    expected_output: "Detaljert forskningsrapport i Markdown-format med kilder, analyse og anbefalinger. Lagres i outputs/."
+    agent: "deep_research_agent"

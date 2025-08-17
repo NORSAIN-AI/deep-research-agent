@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+
+# Envs
+.env
+*.env
+.venv/
+venv/
+env/
+ENV/
+
+# Outputs & logs
+outputs/*
+!outputs/.gitkeep
+logs/
+*.log
+
+# System/IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.iml
+
+# Byte-compiled & cache
+*.egg-info/
+.eggs/
+.mypy_cache/
+.pytest_cache/

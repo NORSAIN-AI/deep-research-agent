@@ -1,0 +1,13 @@
+@startuml
+title DeepResearch Agent - Sequence Diagram (Delegation Flow)
+participant User
+participant DeepResearchCrew
+participant DeepResearchAgent
+participant Tools
+User -> DeepResearchCrew: Kickoff med topic
+DeepResearchCrew -> DeepResearchAgent: Deleger task
+DeepResearchAgent -> Tools: Søke data (f.eks. web)
+Tools --> DeepResearchAgent: Resultater
+DeepResearchAgent -> DeepResearchCrew: Syntetiser rapport
+DeepResearchCrew --> User: Final output
+@enduml
