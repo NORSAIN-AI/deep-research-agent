@@ -1,73 +1,82 @@
 ---
-title: "📚 Dokumentasjon – Deep Research Agent"
-document_id: "DRA-DOC-READ-0001"
-version: "1.1"
-status: "Utkast"
+contact: info@norsain.com
 date: 2025-08-18
-owner: "Henrik Strand / NORSAIN"
-contact: "info@norsain.com"
-path: "/docs/README.md"
-tags: ["dokumentasjon", "oversikt", "deep_research_agent"]
-project: "deep_research_agent"
-workspace: "Utvikling og dokumentasjon"
-usage_scope: "Alle utviklere og bidragsytere"
-iso_references:
-  - "ISO 15489 – Dokumentforvaltning"
-  - "ISO 30301 – Dokumentstyringssystemer"
-  - "ISO 9001:2015 – §7.5 Dokumentert informasjon"
-review_cycle: "Kvartalsvis"
-license: "Apache-2.0"
+document_id: DRA-README-0001
+license: CC-BY-SA-4.0
+owner: Henrik Strand / NORSAIN
+path: /README.md
+project: NORSAIN Core Platform
+review_cycle: Kvartalsvis
+status: Aktiv
+tags:
+- mas
+- research
+- agent
+- documentation
+title: deep_research_agent -- README
+usage_scope: Hoveddokumentasjon for hele repoet
+version: 1.0
+workspace: GPT Project Room
 ---
 
-# 📚 Dokumentasjon – Deep Research Agent
+# 🤖 deep_research_agent
 
-Velkommen til dokumentasjonen for **Deep Research Agent**.
-Denne siden fungerer som inngangsport og oversikt over alt innhold i `docs/` og tilhørende prosjektfiler.
+Et **2025-klar Multi-Agent (MAS) forskningsagent** bygget på
+**CrewAI** + **OpenAI SDK**, med robust dokumentasjon, test, CI/CD og
+governance.
 
----
+------------------------------------------------------------------------
 
-## 1. 📖 Innhold
+## 🚀 Nøkkelfunksjoner
 
-### 1.1 Introduksjon
-- [../README.md](../README.md) – Hurtigstart, installasjon og kjøring av prosjektet.
-- [project_description.md](./project_description.md) – Mål, arkitektur og sikkerhet.
+-   🔄 Dyp, iterativ forskning (**plan → hent → analyser → syntetiser**)
+-   🌐 Integrerte verktøy: **SerperDevTool** (web), **GithubSearchTool**
+    (kode)
+-   ⚙️ YAML-konfigurasjon for agenter og tasks
+-   💻 CLI og Python-API
+-   🧪 Evalueringer, sikkerhetspolicy og release-automatisering
+-   🐳 Devcontainer og Docker-støtte
 
-### 1.2 Utviklingsmiljø
-- [.devcontainer/](../.devcontainer/) – Dev Container-oppsett (gcloud, kubectl, docker, pre-commit).
-- [docker-compose.yml](../docker-compose.yml) – Lokalt multi-service oppsett.
-- [Dockerfile](../Dockerfile) – Bygg og kjøring av applikasjonen.
+------------------------------------------------------------------------
 
-### 1.3 Applikasjon
-- [../src/](../src/) – Kildekode for agentene (Python 3.11).
-- [../requirements.txt](../requirements.txt) – Produksjonsavhengigheter.
-- [../requirements-dev.txt](../requirements-dev.txt) – Utviklingsavhengigheter.
+## 📦 Kjappstart
 
-### 1.4 Infrastruktur
-- [../k8s/](../k8s/) – Kubernetes manifests for deploy.
-- [../terraform/](../terraform/) – Infrastruktur som kode (namespace, SA, GKE-integrasjon).
-- CI/CD workflows: [../.github/workflows/](../.github/workflows/) – Automatiserte pipelines.
+``` bash
+python -m venv .venv && source .venv/bin/activate  # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env  # fyll inn nøkler
+python -m src.main "agentic ai trender 2025"
+```
 
-### 1.5 MLOps / Vertex AI
-- [vertex/](./vertex/) – (planlagt) Pipelines, modellregister og treningsjobber i Vertex AI.
-- Dokumentasjon for datadrift og modellovervåking (kommer).
+------------------------------------------------------------------------
 
-### 1.6 Kvalitet og kontroll
-- [../.pre-commit-config.yaml](../.pre-commit-config.yaml) – Hooks for kodekvalitet og sikkerhet.
-- [policy.md](./policy.md) – Retningslinjer og interne policyer (kommer).
-- [security.md](./security.md) – Retningslinjer for sikkerhet og compliance (kommer).
+## 🧱 Struktur (høy-nivå)
 
----
+Se [`docs/repo_structure.md`](docs/repo_structure.md) for komplett
+struktur.
 
-## 2. 📅 Neste steg
+    deep-research-agent/
+     ├─ docs/             # dokumentasjon, policies, UML, ADR
+     ├─ reports/          # genererte rapporter
+     ├─ templates/        # maler for rapporter, prompts, sjekklister
+     ├─ src/              # kildekode (CrewAI-agenter, gen_report.py)
+     ├─ tests/            # tester og evalueringer
+     ├─ config/           # YAML-konfig for agenter/tasks
+     └─ .github/          # CI/CD workflows
 
-- Utvide `vertex/` med pipeline-eksempler.
-- Ferdigstille `policy.md` og `security.md`.
-- Legge til arkitekturdiagrammer (Mermaid) under `docs/architecture/`.
+------------------------------------------------------------------------
 
----
+## 🔐 Sikkerhet
 
-## 3. 📑 Dokumentkontroll
+-   🔑 Nøkler kun i `.env` / CI-secrets
+-   📜 `SECURITY.md` og `CODEOWNERS` satt opp
+-   ✅ Pre-commit hooks og avhengighetsvarsling aktivert
 
-| Eier       | Sist oppdatert | Godkjent av       | Status | Kontakt          | ISO-samsvar |
-|------------|----------------|-------------------|--------|------------------|-------------|
-| NORSAIN    | 2025-08-18     | Henrik Strand     | Utkast | info@norsain.com | ISO 15489, ISO 30301, ISO 9001:2015 §7.5 |
+------------------------------------------------------------------------
+
+  --------------------------------------------------------------------------
+  Eier      Sist oppdatert   Godkjent av         Status   Kontakt
+  --------- ---------------- ------------------- -------- ------------------
+  NORSAIN   2025-08-18       CEO Henrik Strand   Aktiv    info@norsain.com
+
+  --------------------------------------------------------------------------
