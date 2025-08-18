@@ -1,9 +1,10 @@
+-r requirements.txt
+
+pre-commit
 black
 ruff
 mypy
 pytest
 pytest-cov
 types-requests
-pre-commit
-bandit
-pip-audit
+types-PyYAML
