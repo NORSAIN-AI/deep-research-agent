@@ -1,26 +1,37 @@
 import datetime as dt
 import os
 import re
+import warnings
 from pathlib import Path
 from typing import Any
 
 import yaml
 from crewai import Agent, Crew, Process, Task
+
+# Removed unused imports: agent, crew, task from crewai
+from crewai_tools import GithubSearchTool, SerperDevTool
 from dotenv import load_dotenv
 from loguru import logger
 from openai import APIConnectionError, BadRequestError, RateLimitError
 
-try:
-    from crewai import agent, crew, task
-except Exception:
-    agent = task = crew = lambda x: x
-
-from crewai_tools import GithubSearchTool, SerperDevTool
-
 from src.openai_client import client as openai_client
+
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
 def _read_yaml(path: Path) -> dict[str, Any]:
+    """
+    Reads a YAML file and returns its contents as a dictionary.
+
+    Args:
+        path (Path): The path to the YAML file.
+
+    Returns:
+        dict[str, Any]: The contents of the YAML file as a dictionary. Returns an empty dictionary if the file is empty.
+
+    Raises:
+        FileNotFoundError: If the specified file does not exist.
+    """
     """Les YAML og returner dict; feil hvis filen ikke finnes."""
     if not path.exists():
         raise FileNotFoundError(f"YAML ikke funnet: {path}")
@@ -64,11 +75,10 @@ class DeepResearchCrew:
         return s.replace("{{ research_topic }}", self.research_topic) if isinstance(s, str) else s
 
     def deep_research_agent(self) -> Agent:
+        """Oppretter og returnerer en Agent for dyp forskning."""
         cfg = self.agents["deep_research_agent"]
-        from crewai_tools.base import BaseTool  # Ensure BaseTool is imported
 
-        tools = [t for t in (self.serper_tool, self.github_tool) if t]
-        tools = [t if isinstance(t, BaseTool) else t for t in tools]  # Cast to BaseTool if needed
+        tools: list[Any] = [t for t in (self.serper_tool, self.github_tool) if t]
 
         return Agent(
             role=cfg.get("role", "Deep Research Leader"),
