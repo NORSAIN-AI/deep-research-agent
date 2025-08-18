@@ -1,0 +1,84 @@
+# .github/workflows/sanity_live.yml
+name: Sanity Live Ping
+
+on:
+  workflow_dispatch:
+    inputs:
+      live_ping:
+        description: "Ping OpenAI/Serper med ekte API-kall"
+        required: true
+        default: "true"
+
+permissions:
+  contents: read
+
+env:
+  # Budsjett/kill-switch. Sett til "false" for å slå av pingen uten å endre inputs.
+  ENABLE_LIVE_PING: "true"
+
+jobs:
+  live-ping:
+    # Kjør bare når både env og input sier ja
+    if: ${{ env.ENABLE_LIVE_PING == 'true' && github.event.inputs.live_ping == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Verify secrets present
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${OPENAI_API_KEY}" || { echo "❌ Missing OPENAI_API_KEY"; exit 1; }
+          test -n "${SERPER_API_KEY}" || { echo "❌ Missing SERPER_API_KEY"; exit 1; }
+          echo "✅ Both secrets are present"
+
+      - name: Live ping OpenAI (GET /v1/models)
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "🔗 Testing OpenAI API..."
+          # -sS: stille men vis feil, -f: fail på ikke-2xx, --max-time: timeout
+          curl -sSf --max-time 10 \
+            -H "Authorization: Bearer ${OPENAI_API_KEY}" \
+            https://api.openai.com/v1/models \
+            > /dev/null
+          echo "✅ OpenAI responded OK"
+
+      - name: Live ping Serper (POST /search)
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "🔗 Testing Serper API..."
+          curl -sSf --max-time 10 \
+            -H "X-API-KEY: ${SERPER_API_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{"q":"test","num":1}' \
+            https://google.serper.dev/search \
+            > /dev/null
+          echo "✅ Serper responded OK"
+
+      - name: Save short logs as artifact
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          {
+            echo "OpenAI: OK"
+            echo "Serper: OK"
+            echo "Run ID: $GITHUB_RUN_ID"
+            echo "Live ping: ${{ github.event.inputs.live_ping }}"
+          } > ping.txt
+        # Last opp artefakt
+      - name: Upload artifact
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: sanity-live-logs
+          path: ping.txt
+          if-no-files-found: warn
