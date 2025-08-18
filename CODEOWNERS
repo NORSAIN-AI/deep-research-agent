@@ -1,18 +1,19 @@
 # Default owners for the whole repo
-*                       @NORSAIN-AI/maintainers
+* @NORSAIN-AI/maintainers
 
 # Documentation
-/docs/                  @NORSAIN-AI/docs
+/docs/ @NORSAIN-AI/docs
 
 # Source code
-/src/                   @NORSAIN-AI/engineering
+/src/ @NORSAIN-AI/engineering
 
 # CI/CD workflows
-/.github/workflows/     @NORSAIN-AI/maintainers
+.github/workflows/ @NORSAIN-AI/maintainers
 
-# Devcontainer & infra (only include if these folders exist)
-# /.devcontainer/       @NORSAIN-AI/engineering
-# /k8s/                 @NORSAIN-AI/engineering
-# /terraform/           @NORSAIN-AI/engineering
+# Devcontainer & infra (bare om disse mappene finnes)
+/.devcontainer/ @NORSAIN-AI/engineering
+/k8s/           @NORSAIN-AI/engineering
+/terraform/     @NORSAIN-AI/engineering
+
 # Tests
-/tests/                 @NORSAIN-AI/engineering
+/tests/ @NORSAIN-AI/engineering
