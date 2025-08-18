@@ -21,7 +21,7 @@ license: "Apache-2.0"
 
 # 🔄 Dataflyt – Deep Research Agent
 
-Dette diagrammet viser hvordan systemet behandler et tema fra brukerinput til ferdig generert rapport.  
+Dette diagrammet viser hvordan systemet behandler et tema fra brukerinput til ferdig generert rapport.
 
 ```mermaid
 flowchart TD

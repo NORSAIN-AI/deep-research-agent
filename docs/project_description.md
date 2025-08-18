@@ -21,7 +21,7 @@ license: "Apache-2.0"
 
 # 📘 Prosjektbeskrivelse – Deep Research Agent
 
-Denne filen beskriver **mål**, **arkitektur** og **sikkerhetsprinsipper** for prosjektet.  
+Denne filen beskriver **mål**, **arkitektur** og **sikkerhetsprinsipper** for prosjektet.
 Se også [README.md](./README.md) for introduksjon, oppsett og hurtigstart.
 
 ---
@@ -39,46 +39,46 @@ Se også [README.md](./README.md) for introduksjon, oppsett og hurtigstart.
 
 ## 2. 🏗️ Arkitektur
 
-- **Utviklingsmiljø:**  
+- **Utviklingsmiljø:**
   Dev Container i VS Code med støtte for Docker, gcloud, kubectl, helm og pre-commit hooks.
-- **Kjerneteknologi:**  
-  - Python 3.11 (FastAPI, Pydantic, asyncio).  
+- **Kjerneteknologi:**
+  - Python 3.11 (FastAPI, Pydantic, asyncio).
   - Multi-agent orkestrering (CrewAI / egen agent-ramme).
-- **Containerisering:**  
-  - Dockerfile for appen.  
+- **Containerisering:**
+  - Dockerfile for appen.
   - `docker-compose.yml` for lokale tjenester (db, redis, welcome-service).
-- **Deploy-miljøer:**  
-  - **Lokal utvikling** via Docker Compose.  
-  - **Google Kubernetes Engine (GKE)** for staging/produksjon.  
+- **Deploy-miljøer:**
+  - **Lokal utvikling** via Docker Compose.
+  - **Google Kubernetes Engine (GKE)** for staging/produksjon.
   - **Vertex AI** for modelltrening og pipeline-orchestrering.
-- **CI/CD:**  
+- **CI/CD:**
   GitHub Actions / Cloud Build med støtte for pre-commit checks, image build og deploy til GKE.
 
 ---
 
 ## 3. 🔐 Sikkerhet og governance
 
-- **Identitet og tilgang:**  
-  - Google Workload Identity for pods (ingen statiske nøkler).  
+- **Identitet og tilgang:**
+  - Google Workload Identity for pods (ingen statiske nøkler).
   - IAM-roller gis via Google Groups, ikke enkeltbrukere.
-- **Secrets:**  
-  - Secret Manager via CSI-driver i GKE.  
+- **Secrets:**
+  - Secret Manager via CSI-driver i GKE.
   - Ingen API-nøkler sjekkes inn i repo.
-- **Policyer og kontroll:**  
-  - Binary Authorization for images.  
+- **Policyer og kontroll:**
+  - Binary Authorization for images.
   - Policy Controller (OPA/Gatekeeper) for Kubernetes.
-- **Logging og revisjon:**  
-  - Cloud Logging + sentral revisjonslogg.  
+- **Logging og revisjon:**
+  - Cloud Logging + sentral revisjonslogg.
   - Pre-commit hooks for å sikre kodekvalitet og sporbarhet.
 
 ---
 
 ## 4. 📅 Neste steg
 
-1. Ferdigstille minimal FastAPI-app med healthcheck.  
-2. Lage Helm chart for enkel deploy til GKE.  
-3. Definere første Vertex AI pipeline for research + rapportgenerering.  
-4. Etablere CI/CD med GitHub Actions og Cloud Build.  
+1. Ferdigstille minimal FastAPI-app med healthcheck.
+2. Lage Helm chart for enkel deploy til GKE.
+3. Definere første Vertex AI pipeline for research + rapportgenerering.
+4. Etablere CI/CD med GitHub Actions og Cloud Build.
 
 ---
 
@@ -87,4 +87,3 @@ Se også [README.md](./README.md) for introduksjon, oppsett og hurtigstart.
 | Eier       | Sist oppdatert | Godkjent av       | Status | Kontakt          | ISO-samsvar |
 |------------|----------------|-------------------|--------|------------------|-------------|
 | NORSAIN    | 2025-08-18     | Henrik Strand     | Utkast | info@norsain.com | ISO 15489, ISO 30301, ISO 9001:2015 §7.5 |
-

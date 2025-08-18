@@ -21,7 +21,7 @@ license: "Apache-2.0"
 
 # 📚 Dokumentasjon – Deep Research Agent
 
-Velkommen til dokumentasjonen for **Deep Research Agent**.  
+Velkommen til dokumentasjonen for **Deep Research Agent**.
 Denne siden fungerer som inngangsport og oversikt over alt innhold i `docs/` og tilhørende prosjektfiler.
 
 ---
@@ -60,9 +60,9 @@ Denne siden fungerer som inngangsport og oversikt over alt innhold i `docs/` og 
 
 ## 2. 📅 Neste steg
 
-- Utvide `vertex/` med pipeline-eksempler.  
-- Ferdigstille `policy.md` og `security.md`.  
-- Legge til arkitekturdiagrammer (Mermaid) under `docs/architecture/`.  
+- Utvide `vertex/` med pipeline-eksempler.
+- Ferdigstille `policy.md` og `security.md`.
+- Legge til arkitekturdiagrammer (Mermaid) under `docs/architecture/`.
 
 ---
 

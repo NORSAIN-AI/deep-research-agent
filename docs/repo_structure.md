@@ -1,6 +1,6 @@
 # 📂 Repo-struktur – deep_research_agent
 
-Denne filen beskriver innholdet i repoet, med mapper, filer og deres funksjon.  
+Denne filen beskriver innholdet i repoet, med mapper, filer og deres funksjon.
 Formatet er laget for å gi rask oversikt for utviklere, bidragsytere og reviewers.
 
 ---
@@ -112,5 +112,3 @@ Formatet er laget for å gi rask oversikt for utviklere, bidragsytere og reviewe
 | Eier       | Sist oppdatert | Godkjent av | Status | Kontakt |
 |------------|----------------|-------------|--------|---------|
 | NORSAIN    | 2025-08-18     | Henrik Strand | Aktiv | info@norsain.com |
-
-

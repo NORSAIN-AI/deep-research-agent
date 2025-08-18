@@ -21,16 +21,16 @@ license: "Apache-2.0"
 
 # 📐 Arkitektur – Deep Research Agent
 
-Denne mappen inneholder arkitekturdiagrammer og strukturell dokumentasjon for **Deep Research Agent**.  
-Diagrammene er laget med **PlantUML** og **Mermaid** for å visualisere systemets komponenter, interaksjoner og datatilflyt.  
+Denne mappen inneholder arkitekturdiagrammer og strukturell dokumentasjon for **Deep Research Agent**.
+Diagrammene er laget med **PlantUML** og **Mermaid** for å visualisere systemets komponenter, interaksjoner og datatilflyt.
 
 ---
 
 ## 1. 🎯 Formål
 
-- Dokumentere systemarkitektur for utviklere og bidragsytere.  
-- Gi oversikt over komponenter, agenter og interaksjoner.  
-- Sikre samsvar med NORSAIN dokumentpolicy og ISO-standarder.  
+- Dokumentere systemarkitektur for utviklere og bidragsytere.
+- Gi oversikt over komponenter, agenter og interaksjoner.
+- Sikre samsvar med NORSAIN dokumentpolicy og ISO-standarder.
 
 ---
 
@@ -48,16 +48,16 @@ Diagrammene er laget med **PlantUML** og **Mermaid** for å visualisere systemet
 
 ## 3. 🛠 Bruk
 
-- PlantUML-filer (`.puml`) kan genereres med [PlantUML](https://plantuml.com/).  
-- Mermaid-filer (`.mmd`) kan forhåndsvises direkte i GitHub eller via [Mermaid Live Editor](https://mermaid.live/).  
+- PlantUML-filer (`.puml`) kan genereres med [PlantUML](https://plantuml.com/).
+- Mermaid-filer (`.mmd`) kan forhåndsvises direkte i GitHub eller via [Mermaid Live Editor](https://mermaid.live/).
 
 ---
 
 ## 4. 📅 Neste steg
 
-- Ferdigstille detaljert komponentdiagram.  
-- Legge til sekvensdiagram for CI/CD pipeline.  
-- Utvide systemoversikt med sikkerhets- og governance-lag.  
+- Ferdigstille detaljert komponentdiagram.
+- Legge til sekvensdiagram for CI/CD pipeline.
+- Utvide systemoversikt med sikkerhets- og governance-lag.
 
 ---
 
