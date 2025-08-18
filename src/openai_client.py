@@ -3,7 +3,11 @@ import logging
 import os
 import sys
 
+from dotenv import load_dotenv
 from openai import OpenAI
+
+# Load .env file (must be in project root)
+load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
