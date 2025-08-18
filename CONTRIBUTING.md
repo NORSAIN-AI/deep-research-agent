@@ -15,7 +15,7 @@ review_cycle: "Kvartalsvis"
 license: "CC-BY-SA-4.0"
 ---
 
-# 🤝 Contributing Guidelines
+## 🤝 Contributing Guidelines
 
 Takk for at du ønsker å bidra til **Deep Research Agent**!
 Følg disse retningslinjene for å sikre en ryddig og effektiv utviklingsprosess.
