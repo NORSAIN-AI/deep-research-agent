@@ -63,10 +63,13 @@ class DeepResearchCrew:
     def _render(self, s: Any) -> Any:
         return s.replace("{{ research_topic }}", self.research_topic) if isinstance(s, str) else s
 
-    @agent
     def deep_research_agent(self) -> Agent:
         cfg = self.agents["deep_research_agent"]
+        from crewai_tools.base import BaseTool  # Ensure BaseTool is imported
+
         tools = [t for t in (self.serper_tool, self.github_tool) if t]
+        tools = [t if isinstance(t, BaseTool) else t for t in tools]  # Cast to BaseTool if needed
+
         return Agent(
             role=cfg.get("role", "Deep Research Leader"),
             goal=cfg.get("goal", "Dyp forskning og syntese"),
@@ -74,11 +77,9 @@ class DeepResearchCrew:
             tools=tools,
             allow_delegation=cfg.get("allow_delegation", True),
             verbose=True,
-            llm=cfg.get("llm", self.openai_model),
-            temperature=cfg.get("temperature", 0.2),
+            llm=self.openai_model,
         )
 
-    @task
     def deep_research_task(self) -> Task:
         cfg = self.tasks["deep_research_task"]
         return Task(
@@ -87,7 +88,6 @@ class DeepResearchCrew:
             agent=self.deep_research_agent(),
         )
 
-    @crew
     def crew(self) -> Crew:
         return Crew(
             agents=[self.deep_research_agent()],
@@ -120,7 +120,7 @@ class DeepResearchCrew:
             ts = dt.datetime.now().strftime("%Y%m%d_%H%M%S")
             topic_slug = _slugify(self.research_topic)[:60]
             path = outdir / f"{topic_slug}_report_{ts}.md"
-            path.write_text(content, encoding="utf-8")
+            path.write_text(content or "", encoding="utf-8")
             return str(path.resolve())
 
         except (APIConnectionError, RateLimitError, BadRequestError) as e:
