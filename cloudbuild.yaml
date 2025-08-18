@@ -1,16 +1,16 @@
 # ---
-# title: "Cloud Build pipeline for DeepResearch Agent"
+# title: "Cloud Build pipeline for DeepResearch Agent (Python 3.11, CrewAI-safe)"
 # document_id: "DRA-CICD-0001"
-# version: "1.0"
+# version: "1.1"
 # status: "Aktiv"
 # date: "2025-08-18"
 # owner: "Henrik Strand / NORSAIN"
 # contact: "info@norsain.com"
 # path: "/cloudbuild.yaml"
-# tags: ["cloudbuild", "gcp", "ci/cd", "artifact-registry", "kaniko", "cache"]
+# tags: ["cloudbuild", "gcp", "ci/cd", "artifact-registry", "kaniko", "cache", "python3.11"]
 # project: "NORSAIN Core Platform"
 # workspace: "GPT Project Room"
-# usage_scope: "Bygg og deploy av deep-research-agent til GCP"
+# usage_scope: "Bygg og push av deep-research-agent med Python 3.11"
 # review_cycle: "Kvartalsvis"
 # license: "CC-BY-SA-4.0"
 # ---
@@ -21,37 +21,54 @@ substitutions:
   _IMAGE: deep-research-agent
   _PY_VERSION: "3.11"
 
-# Generelle byggevalg
 options:
   logging: CLOUD_LOGGING_ONLY
   machineType: E2_HIGHCPU_8
+  dynamic_substitutions: true
 
-# Trinnvis pipeline: install → lint → test → build & push (med cache) → tag latest
 steps:
-  # 1) Installer avhengigheter for lint/test
+  # 0) Logg Python-versjon (sporbarhet)
   - name: "python:${_PY_VERSION}"
-    id: "Install"
+    id: "Python version"
+    entrypoint: "bash"
+    args: ["-lc", "python --version && which python"]
+
+  # 1) CI-venv: installer deps for lint/test (CrewAI krever 3.11)
+  - name: "python:${_PY_VERSION}"
+    id: "CI venv: install"
     entrypoint: "bash"
     args:
       - -lc
       - |
-        python -m pip install --upgrade pip
+        python -m venv /workspace/.ci-venv
+        source /workspace/.ci-venv/bin/activate
+        python -m pip install --upgrade pip wheel setuptools
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install black ruff pytest
+        if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; else pip install black ruff pytest; fi
+        python -m pip list
 
   # 2) Lint
   - name: "python:${_PY_VERSION}"
     id: "Lint"
     entrypoint: "bash"
-    args: ["-lc", "black --check . && ruff ."]
+    args:
+      - -lc
+      - |
+        source /workspace/.ci-venv/bin/activate
+        black --check .
+        ruff .
 
   # 3) Tester (tillater tom test-suite)
   - name: "python:${_PY_VERSION}"
     id: "Tests"
     entrypoint: "bash"
-    args: ["-lc", "pytest -q || echo 'No tests yet'"]
+    args:
+      - -lc
+      - |
+        source /workspace/.ci-venv/bin/activate
+        pytest -q || echo 'No tests yet'
 
-  # 4) Build & push image med Kaniko + cache til Artifact Registry
+  # 4) Build & push image med Kaniko (cache i Artifact Registry)
   - name: "gcr.io/kaniko-project/executor:latest"
     id: "Build & Push (sha)"
     args:
@@ -63,23 +80,20 @@ steps:
       - --snapshotMode=redo
       - --compressed-caching=false
       - --use-new-run
-      # Valgfritt: SBOM (krever støtte i base image / skann i AR i stedet)
-      # - --generate-sbom
+      - --dockerfile=Dockerfile
+      - --context=dir:///workspace
 
-  # 5) Merk samme image som :latest (immutability ivaretas av sha-tag)
+  # 5) Tag samme digest som :latest (immutability via sha beholdes)
   - name: "gcr.io/cloud-builders/gcloud"
     id: "Tag latest"
     entrypoint: "bash"
     args:
       - -lc
       - |
-        gcloud artifacts docker tags add           ${_AR_REGION}-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/${_IMAGE}:$SHORT_SHA           ${_AR_REGION}-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/${_IMAGE}:latest
+        gcloud artifacts docker tags add \
+          ${_AR_REGION}-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/${_IMAGE}:$SHORT_SHA \
+          ${_AR_REGION}-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/${_IMAGE}:latest
 
-# Deklarer produserte images (gir lenker i Cloud Build UI)
 images:
   - "${_AR_REGION}-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/${_IMAGE}:$SHORT_SHA"
   - "${_AR_REGION}-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/${_IMAGE}:latest"
-
-# Anbefalte triggere (eksempel – konfigurer i Cloud Console):
-# - main branch: bygg alle commits, deploy fra separat pipeline
-# - release tags (v*): bygg og push prod-images
