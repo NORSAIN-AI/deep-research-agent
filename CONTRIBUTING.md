@@ -1,3 +1,20 @@
+---
+title: "Contributing Guidelines – Deep Research Agent"
+document_id: "NS-DRA-CONTRIB-0001"
+version: "1.0"
+status: "Aktiv"
+date: "2025-08-18"
+owner: "Henrik Strand / NORSAIN"
+contact: "info@norsain.com"
+path: "/contributing.md"
+tags: ["git", "workflow", "contributing", "policy"]
+project: "Deep Research Agent"
+workspace: "GPT Project Room"
+usage_scope: "Utviklingspraksis og vedlikehold"
+review_cycle: "Kvartalsvis"
+license: "CC-BY-SA-4.0"
+---
+
 # 🤝 Contributing Guidelines
 
 Takk for at du ønsker å bidra til **Deep Research Agent**!
@@ -26,9 +43,9 @@ Følg disse retningslinjene for å sikre en ryddig og effektiv utviklingsprosess
 ## 🛠️ Code Style & Quality
 
 - **Pre-commit hooks** kjører automatisk:
-  - [`black`](https://black.readthedocs.io/) (formatterer kode)
-  - [`ruff`](https://docs.astral.sh/ruff/) (linting)
-  - `mypy` (type-sjekk)
+  - [`black`](https://black.readthedocs.io/) – formattering
+  - [`ruff`](https://docs.astral.sh/ruff/) – linting
+  - [`mypy`](http://mypy-lang.org/) – type-sjekk
 
 - **Testdekning**
   - Alle nye features skal ha tester.
